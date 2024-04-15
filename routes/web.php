@@ -18,6 +18,9 @@ Route::get('/', function () {
 Route::get('/posts', [PostController::class, 'index'])->name('post.index');
 Route::get('/posts/fresh', [PostController::class, 'fresh'])->name('post.fresh');
 
+Route::get('/dbconn', function (){
+    return view('dbconn');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
