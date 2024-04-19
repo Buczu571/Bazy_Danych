@@ -2,47 +2,90 @@ import React, { Component } from 'react';
 
 export default class NewComponent extends Component {
     state = {
-        name: 'Kacper',
-        age: 24,
-        mobile: '123456789',
-        skills: ['PHP', 'Laravel', 'React', 'Vue']
+        id: '',
+        start_city: '',
+        end_city: '',
+        date: '',
+        time: '',
+        submitted: false,
+        error: null
     }
 
-    handleClick = (e) => {
-        console.log("Button is clicked");
-    }
-
-    handleMouseOver = (e) => {
-        console.log(e.target, e.pageX, e.pageY);
-    }
-
-    handleCopy = (e) => {
-        console.log("Text is copied");
-    }
-
-    handleChangeState = () => {
+    handleChange = (e) => {
         this.setState({
-            name: 'Kacper Kozak',
-            age: 25,
-            mobile: '987654321',
-            skills: ['PHP', 'Laravel', 'React', 'Vue', 'Angular']
+            [e.target.name]: e.target.value
         });
+    }
+
+    handleSubmit = async (e) => {
+        e.preventDefault();
+        const { id, start_city, end_city, date, time } = this.state;
+
+        try {
+            // Wysyłanie danych do bazy danych (przykład dla fetch API)
+            const response = await fetch('url/do/zapisu/danych', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id,
+                    start_city,
+                    end_city,
+                    date,
+                    time
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Wystąpił problem podczas wysyłania danych do bazy.');
+            }
+
+            // Zmiana stanu, aby pokazać komunikat o pomyślnym zapisie
+            this.setState({
+                submitted: true,
+                id: '',
+                start_city: '',
+                end_city: '',
+                date: '',
+                time: '',
+                error: null
+            });
+        } catch (error) {
+            // Obsługa błędów
+            this.setState({ error: error.message });
+        }
     }
 
     render() {
         return (
             <div>
-                <h1>My name is {this.state.name}</h1>
-                <h2>My age is {this.state.age}</h2>
-                <h3>My mobile is {this.state.mobile}</h3>
-                <h4>My skills are {this.state.skills.join(',')}</h4>
-
-                <form>
-                    Name : <input type="text" name="name" /> <br/>
-                    Age : <input type="text" name="age" /> <br/>
-                    Mobile : <input type="text" name="mobile" /> <br/>
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Podaj numer/ID pociągu:
+                        <input type="number" name="id" value={this.state.id} onChange={this.handleChange} />
+                    </label><br/>
+                    <label>
+                        Podaj miasto początkowe:
+                        <input type="text" name="start_city" value={this.state.start_city} onChange={this.handleChange} />
+                    </label><br/>
+                    <label>
+                        Podaj miasto końcowe:
+                        <input type="text" name="end_city" value={this.state.end_city} onChange={this.handleChange} />
+                    </label><br/>
+                    <label>
+                        Podaj datę:
+                        <input type="date" name="date" value={this.state.date} onChange={this.handleChange} />
+                    </label><br/>
+                    <label>
+                        Podaj godzinę:
+                        <input type="time" name="time" value={this.state.time} onChange={this.handleChange} />
+                    </label><br/>
                     <button type="submit">Submit</button>
                 </form>
+
+                {this.state.submitted && <p>Dane zostały pomyślnie zapisane.</p>}
+                {this.state.error && <p>Błąd: {this.state.error}</p>}
             </div>
         );
     }

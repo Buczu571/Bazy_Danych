@@ -4,6 +4,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TrainController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -21,6 +22,16 @@ Route::get('/posts/fresh', [PostController::class, 'fresh'])->name('post.fresh')
 Route::get('/dbconn', function (){
     return view('dbconn');
 });
+
+
+
+Route::view('add', 'AddTrain');
+Route::POST('add', [TrainController::class, 'AddTrain']);
+
+
+
+
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
