@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrainController;
+use App\Http\Controllers\UsersController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -29,7 +30,7 @@ Route::view('add', 'AddTrain');
 Route::POST('add', [TrainController::class, 'AddTrain']);
 
 
-
+Route::get('/users/{user}/delete', [UserController::class, 'showDeleteConfirmation'])->name('users.delete.confirmation');
 
 
 
