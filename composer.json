@@ -10,7 +10,6 @@
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "open-admin-org/open-admin": "^1.0",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

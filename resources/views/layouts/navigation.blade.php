@@ -5,16 +5,48 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ Auth::user()->usertype == 'admin' ? route('admin.dashboard') : route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="Auth::user()->usertype == 'admin' ?  route('admin.dashboard') : route('dashboard')" :active="Auth::user()->usertype == 'admin' ? request()->routeIs('admin.dashboard') : request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    {{-- Admin links --}}
+                    @if (Auth::user()->usertype == 'admin')
+                    <x-nav-link href="trains" :active="request()->routeIs('admin.trains')">
+                        {{ __('Zarządzanie Trasami') }}
+                    </x-nav-link>
+
+                    <x-nav-link href="tickets" :active="request()->routeIs('admin.tickets')">
+                        {{ __('Zarządzanie Biletami') }}
+                    </x-nav-link>
+
+                    <x-nav-link href="usersmngr" :active="request()->routeIs('admin.usersmngr')">
+                        {{ __('Zarządzanie Użytkownikami') }}
+                    </x-nav-link>
+                    @endif
+
+                    {{-- User links --}}
+
+                    @if (Auth::user()->usertype == 'user')
+                    <x-nav-link href="order" :active="request()->routeIs('user.order')">
+                        {{ __('Bilety') }}
+                    </x-nav-link>
+
+                    <x-nav-link href="cart" :active="request()->routeIs('user.cart')">
+                        {{ __('Koszyk') }}
+                    </x-nav-link>
+
+                    <x-nav-link href="profile" :active="request()->routeIs('profile.edit')">
+                        {{ __('Mój Profil') }}
+                    </x-nav-link>
+                    @endif
+
                 </div>
             </div>
 
